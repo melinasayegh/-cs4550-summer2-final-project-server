@@ -1,0 +1,23 @@
+{
+  "name": "cs4550-summer2-final-project_server",
+  "version": "1.0.0",
+  "description": "Server for CS 4500 Summer2 Final Project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/melinasayegh/cs4550-summer2-final-project-server.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/melinasayegh/cs4550-summer2-final-project-server/issues"
+  },
+  "homepage": "https://github.com/melinasayegh/cs4550-summer2-final-project-server#readme",
+  "dependencies": {
+    "express": "^4.16.3",
+    "express-session": "^1.15.6"
+  }
+}
