@@ -12,7 +12,6 @@ const reviewSchema = mongoose.Schema({
         type: mongoose.Schema,
         ref: 'RecipeModel'
     }
-
 }, {collection: 'review'});
 
 module.exports = reviewSchema;

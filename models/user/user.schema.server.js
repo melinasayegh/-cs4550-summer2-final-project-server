@@ -5,7 +5,20 @@ const userSchema = mongoose.Schema({
     password: String,
     firstName: String,
     lastName: String,
-    email: String
+    email: String,
+    isAdmin: Boolean,
+    myRecipes: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'RecipeModel'}],
+    favoriteRecipes: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'RecipeModel'}],
+    reviews: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'ReviewModel'}],
+    friends: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'UserModel'}],
 }, {collection: 'user'});
 
 module.exports = userSchema;

@@ -3,7 +3,10 @@ const mongoose = require('mongoose');
 const recipeSchema = mongoose.Schema({
     title: String,
     image: String,
-    creator: User,
+    creator: {
+        type: mongoose.Schema,
+        ref: 'UserModel'
+    },
     createdAt: Date,
     updatedAt: Date,
     ingredients: String,
