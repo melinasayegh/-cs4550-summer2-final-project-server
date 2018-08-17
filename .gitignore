@@ -1,0 +1,9 @@
+### iOS ###
+.DS_Store
+
+### IntelliJ IDEA ###
+node_modules
+.idea
+*.iws
+*.iml
+*.ipr
