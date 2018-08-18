@@ -12,7 +12,7 @@ findUserByCredentials = (username, password) =>
     userModel.findOne({username: username, password: password});
 
 findUserByUsername = (username) =>
-    userModel.findOne({username: username});
+     userModel.findOne({username: username});
 
 createUser = (user) =>
     userModel.create(user);
