@@ -23,6 +23,9 @@ deleteUser = (userId) =>
 updateUser = (newUser) =>
     userModel.update({_id: newUser._id}, {$set: newUser});
 
+addReview = (review) =>
+    userModel.update({_id: review.user}, {$push: {reviews: review._id}});
+
 module.exports = {
     findAllUsers,
     findUserById,
@@ -30,5 +33,6 @@ module.exports = {
     findUserByUsername,
     createUser,
     deleteUser,
-    updateUser
+    updateUser,
+    addReview
 };

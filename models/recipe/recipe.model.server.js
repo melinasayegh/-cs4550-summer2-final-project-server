@@ -20,11 +20,15 @@ updateRecipe = (recipe) =>
 deleteRecipe = recipeId =>
     recipeModel.remove({_id: recipeId});
 
+addReview = (review) =>
+    recipeModel.update({_id: review.recipe}, {$push: {reviews: review._id}});
+
 module.exports = {
     findAllRecipes,
     findAllRecipesForUser,
     findRecipeById,
     createRecipe,
     deleteRecipe,
-    updateRecipe
+    updateRecipe,
+    addReview
 };
