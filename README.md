@@ -5,5 +5,5 @@ This is the NodeJS back-end for our final project for CS 4550 Web Development - 
 Brenda Lau, Melina Sayegh, and Yoni Smolyar
 
 ***
-Heroku App: https://webdev-final-server-node.herokuapp.com/
+Heroku App: https://community-cookings-server.herokuapp.com/
 ***
