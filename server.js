@@ -6,6 +6,8 @@ const mongoose = require('mongoose');
 const unirest = require('unirest');
 
 app.use(function(req, res, next) {
+    // change this to heroku page after!!
+    //res.header("Access-Control-Allow-Origin", "https://community-cookings.herokuapp.com");
     res.header("Access-Control-Allow-Origin", "http://localhost:4200");
     res.header("Access-Control-Allow-Credentials", "true");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -38,8 +40,7 @@ mongoose.connect('mongodb://user:webdev2018@ds119442.mlab.com:19442/cs4550-summe
 //         console.log(result.status, result.headers, result.body);
 //     });
 
-require('./services/session.service.server')(app);
-// require('./services/user.service.server')(app);
+require('./services/user.service.server')(app);
 // require('./services/recipe.service.server')(app);
 // require('./services/review.service.server')(app);
 
