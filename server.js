@@ -32,16 +32,10 @@ mongoose.connect('mongodb://user:webdev2018@ds119442.mlab.com:19442/cs4550-summe
     }
 });
 
-//THIS IS AN EXAMPLE OF A WORKING UNIREST CALL FOR SPOONACULAR API
-// unirest.get("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/random?limitLicense=false&number=1&tags=vegetarian%2Cdessert")
-//     .header("X-Mashape-Key", "VsYAEwDWxwmshX990l6hWa2WtVNAp1f1zBojsnIEiyKW9hG6Sf")
-//     .header("Accept", "application/json")
-//     .end(function (result) {
-//         console.log(result.status, result.headers, result.body);
-//     });
+
 
 require('./services/user.service.server')(app);
-// require('./services/recipe.service.server')(app);
+require('./services/recipe.service.server')(app);
 // require('./services/review.service.server')(app);
 
 app.listen(process.env.PORT || 3000);
