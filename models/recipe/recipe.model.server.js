@@ -1,31 +1,24 @@
 const mongoose = require('mongoose');
 const recipeSchema = require('./recipe.schema.server');
-
 const recipeModel = mongoose.model('RecipeModel', recipeSchema);
-const userModel = require('../user/user.model.server');
 
 findAllRecipes = () =>
     recipeModel.find();
 
 findAllRecipesForUser = userId =>
-    recipeModel.find({courseId: courseId});
+    recipeModel.find({creator: userId});
 
-findRecipeById = (sectionId) =>
-    recipeModel.findById(sectionId);
+findRecipeById = (recipeId) =>
+    recipeModel.findById(recipeId);
 
-createRecipe = (courseId, section) =>
-    recipeModel.create(section);
+createRecipe = (recipe) =>
+    recipeModel.create(recipe);
 
-deleteRecipe = sectionId =>
-    recipeModel.deleteOne({_id: sectionId});
+updateRecipe = (recipe) =>
+    recipeModel.updateOne({_id: recipe._id}, {$set: recipe});
 
-updateRecipe = (sectionId, newSection) =>
-    recipeModel.updateOne({_id: sectionId}, {$set: {
-            title: newSection.title,
-            courseId: newSection.courseId,
-            maxSeats: newSection.maxSeats,
-            takenSeats: newSection.takenSeats,
-        }});
+deleteRecipe = recipeId =>
+    recipeModel.remove({_id: recipeId});
 
 module.exports = {
     findAllRecipes,

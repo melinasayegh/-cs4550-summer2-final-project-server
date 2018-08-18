@@ -5,11 +5,11 @@ const reviewSchema = mongoose.Schema({
     createdAt: Date,
     updatedAt: Date,
     user: {
-        type: mongoose.Schema,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'UserModel'
     },
     recipe: {
-        type: mongoose.Schema,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'RecipeModel'
     }
 }, {collection: 'review'});
