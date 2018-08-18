@@ -10,8 +10,7 @@ module.exports = app => {
                 if(user === null) {
                     return userModel.createUser(newUser)
                 } else {
-                    // 404 not acceptable
-                    return res.sendStatus(404);
+                    return res.sendStatus(401);
                 }
             })
             .then((user) =>  {
