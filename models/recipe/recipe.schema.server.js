@@ -4,7 +4,7 @@ const recipeSchema = mongoose.Schema({
     title: String,
     image: String,
     creator: {
-        type: mongoose.Schema,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'UserModel'
     },
     createdAt: Date,
