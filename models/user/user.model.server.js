@@ -5,14 +5,23 @@ const userModel = mongoose.model('UserModel', userSchema);
 findAllUsers = () =>
     userModel.find();
 
-findUserById = userId =>
-    userModel.findById({_id: userId});
+findUserById = userId => {
+    let populateQuery = [{path:'myRecipes'}, {path:'favoriteRecipes'}, {path:'myReviews'}];
+
+    return userModel.findById({_id: userId})
+        .populate(populateQuery)
+        .exec();
+};
 
 findUserByCredentials = (username, password) =>
     userModel.findOne({username: username, password: password});
 
-findUserByUsername = (username) =>
-     userModel.findOne({username: username});
+findUserByUsername = (username) => {
+    let populateQuery = [{path: 'myRecipes'}, {path: 'favoriteRecipes'}, {path: 'myReviews'}];
+    return userModel.findOne({username: username})
+        .populate(populateQuery)
+        .exec();
+};
 
 createUser = (user) =>
     userModel.create(user);
