@@ -12,13 +12,14 @@ module.exports = function (app) {
     };
 
     findRecipeById = (req, res) => {
-        recipeModel.findRecipeById(req.params.qid)
+        recipeModel.findRecipeById(req.params.recipeId)
             .then(quiz => res.send(quiz))
     };
 
     // create recipe
     createRecipe = (req, res) => {
-        recipeModel.createRecipe(req.body)
+        let recipe = req.body;
+        recipeModel.createRecipe(recipe)
             .then(recipe => res.send(recipe))
     };
 
