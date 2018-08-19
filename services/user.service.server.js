@@ -8,9 +8,9 @@ module.exports = app => {
         userModel.findUserByUsername(newUser.username)
             .then((user) => {
                 if(user === null) {
-                    return userModel.createUser(newUser)
+                    userModel.createUser(newUser);
                 } else {
-                    return res.sendStatus(401);
+                    res.sendStatus(401);
                 }
             })
             .then((user) =>  {
