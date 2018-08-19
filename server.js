@@ -34,6 +34,6 @@ mongoose.connect('mongodb://user:webdev2018@ds119442.mlab.com:19442/cs4550-summe
 
 require('./services/user.service.server')(app);
 require('./services/recipe.service.server')(app);
-//require('./services/review.service.server')(app);
+require('./services/review.service.server')(app);
 
 app.listen(process.env.PORT || 3000);
