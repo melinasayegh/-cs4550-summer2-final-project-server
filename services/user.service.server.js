@@ -54,7 +54,7 @@ module.exports = app => {
         const id = req.params['userId'];
         userModel.findUserById(id)
             .then(user => {
-                res.json(user);
+                res.send(user);
             })
     };
 
@@ -108,6 +108,7 @@ module.exports = app => {
     app.post('/api/login',    login);
     app.post('/api/logout',   logout);
     app.get ('/api/user',     findAllUsers);
+    app.get ('/api/user/:userId', findUserById);
     app.get ('/api/currentUser', currentUser);
     app.get ('/api/profile', profile);
     app.put ('/api/user/update', updateUser);

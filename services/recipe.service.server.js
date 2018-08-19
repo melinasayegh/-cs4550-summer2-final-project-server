@@ -10,7 +10,7 @@ module.exports = function (app) {
     };
 
     findRecipeById = (req, res) => {
-        recipeModel.findRecipeById(req.params.qid)
+        recipeModel.findRecipeById(req.params.recipeId)
             .then(quiz => res.send(quiz))
     };
 
