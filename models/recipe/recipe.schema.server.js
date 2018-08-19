@@ -7,6 +7,7 @@ const recipeSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'UserModel'
     },
+    description: String,
     createdAt: Date,
     updatedAt: Date,
     ingredients: String,
@@ -16,8 +17,8 @@ const recipeSchema = mongoose.Schema({
     numServings: Number,
     tags: [{
         type: String,
-        enum: ['VEGAN', 'VEGAN', 'DIABETIC', 'GLUTEN-FREE', 'LOW-CALORIE', 'GUILTY-PLEASURE'],
-        default: 'VEGETARIAN'
+        enum: ['VEGAN', 'VEGAN', 'DIABETIC', 'GLUTEN-FREE', 'LOW-CALORIE', 'GUILTY-PLEASURE', 'NONE'],
+        default: 'NONE'
     }],
     reviews: [{
         type: mongoose.Schema.Types.ObjectId,
