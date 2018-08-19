@@ -20,7 +20,7 @@ const recipeSchema = mongoose.Schema({
         default: 'VEGETARIAN'
     }],
     reviews: [{
-        type: mongoose.Schema,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'ReviewModel'
     }]
 
