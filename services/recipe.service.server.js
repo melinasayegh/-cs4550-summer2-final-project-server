@@ -30,7 +30,7 @@ module.exports = function (app) {
 
     // update recipe
     updateRecipe = (req, res) => {
-        recipeModel.updateRecipe(req.params.qid, req.body)
+        recipeModel.updateRecipe(req.params.recipeId, req.body)
             .then(status => res.send(status))
     };
 
@@ -50,7 +50,7 @@ module.exports = function (app) {
             .header("X-Mashape-Key", "VsYAEwDWxwmshX990l6hWa2WtVNAp1f1zBojsnIEiyKW9hG6Sf")
             .header("Accept", "application/json")
             .end(recipe => {
-                if (recipe !== null) {
+                if (recipe !== undefined) {
                     res.send(recipe.body);
                 }
             });
