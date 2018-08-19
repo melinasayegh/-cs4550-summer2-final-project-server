@@ -8,15 +8,16 @@ module.exports = app => {
         userModel.findUserByUsername(newUser.username)
             .then((user) => {
                 if(user === null) {
-                    return userModel.createUser(newUser)
+                    userModel.createUser(newUser)
+                        .then((user) =>  {
+                            req.session['currentUser'] = user;
+                            req.session.cookie._expires = new Date(Date.now() + (30 * 60 * 1000));
+                            res.sendStatus(200);
+                        });
                 } else {
-                    return res.sendStatus(401);
+                    res.sendStatus(401);
                 }
             })
-            .then((user) =>  {
-                req.session['currentUser'] = user;
-                res.sendStatus(200);
-            });
     };
 
     // finds the user in the mongo database and logs them in
@@ -73,23 +74,33 @@ module.exports = app => {
     // retrieves the profile of the currently logged in user
     profile = (req, res) => {
         const currentUser = req.session['currentUser'];
-        userModel.findUserById(currentUser._id)
-            .then(user => {
-                res.json(user);
-            })
+        userModel.findUserByUsername(currentUser.username)
+            .then(user => res.json(user))
     };
 
-    // updates the profile of the currently logged in user
     updateUser = (req, res) => {
-        const newUser = req.body;
-        userModel.updateUser(newUser)
-            .then(response => res.sendStatus(200));
+        let user = req.body;
+        let currentUser = req.session.currentUser;
+        if (currentUser._id !== undefined) {
+            userModel.updateUser(currentUser._id, user)
+                .then(obj => {
+                    console.log(obj);
+                    if (obj.nModified > 0) {
+                        this.findUserById(currentUser._id).then((user) => {
+                            req.session['currentUser'] = user;
+                            res.send(user);
+                        })
+                    } else {
+                        res.sendStatus(402);
+                    }
+                })
+        }
     };
 
     // removes the profile of the currently logged in user
     deleteProfile = (req, res) => {
         const currentUser = req.session['currentUser'];
-        userModel.deleteUser(currentUser)
+        userModel.deleteUser(currentUser._id)
             .then(() => res.send(200));
     };
 
@@ -99,6 +110,6 @@ module.exports = app => {
     app.get ('/api/user',     findAllUsers);
     app.get ('/api/currentUser', currentUser);
     app.get ('/api/profile', profile);
-    app.put ('/api/profile', updateUser);
-    app.delete('/api/profile', deleteProfile);
+    app.put ('/api/user/update', updateUser);
+    app.delete('/api/user/delete', deleteProfile);
 };
