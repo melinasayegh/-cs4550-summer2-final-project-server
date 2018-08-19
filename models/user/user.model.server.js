@@ -20,8 +20,12 @@ createUser = (user) =>
 deleteUser = (userId) =>
     userModel.remove({_id: userId});
 
-updateUser = (newUser) =>
-    userModel.update({_id: newUser._id}, {$set: newUser});
+updateUser = (userId, user) =>
+    userModel.update({_id: userId},
+        {$set: {firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email}
+    });
 
 addReview = (review) =>
     userModel.update({_id: review.user}, {$push: {reviews: review._id}});
