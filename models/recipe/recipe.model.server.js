@@ -15,6 +15,10 @@ findRecipeById = (recipeId) => {
         .exec();
 }
 
+findRecipesByTitle = (recipeTitle) => {
+    return recipeModel.find({title: recipeTitle});
+}
+
 createRecipe = (recipe) =>
     recipeModel.create(recipe);
 
@@ -29,6 +33,7 @@ addReview = (recipeId, reviewId) =>
 
 module.exports = {
     findAllRecipes,
+    findRecipesByTitle,
     findAllRecipesForUser,
     findRecipeById,
     createRecipe,

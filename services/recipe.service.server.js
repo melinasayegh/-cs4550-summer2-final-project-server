@@ -7,13 +7,19 @@ module.exports = function (app) {
 
     findAllRecipes = (req, res) => {
         recipeModel.findAllRecipes()
-            .then(quizzes => res.send(quizzes))
+            .then(recipes => res.send(recipes))
     };
 
     findRecipeById = (req, res) => {
         recipeModel.findRecipeById(req.params.recipeId)
-            .then(quiz => res.send(quiz))
+            .then(recipe => res.send(recipe))
     };
+
+    findRecipesByTitle = (req, res) => {
+        const modRecipeTitle = req.params.recipeTitle.replace(/%20/g, " ");
+        recipeModel.findRecipesByTitle(modRecipeTitle)
+            .then(recipes => res.send(recipes));
+    }
 
     // create recipe
     createRecipe = (req, res) => {
@@ -61,6 +67,7 @@ module.exports = function (app) {
 
     app.get('/api/recipe', findAllRecipes);
     app.get('/api/recipe/:recipeId', findRecipeById);
+    app.get('/api/results/:recipeTitle', findRecipesByTitle);
     app.post('/api/recipe', createRecipe);
     app.put ('/api/recipe/:recipeId', updateRecipe);
     app.delete('/api/recipe/:recipeId', deleteRecipe);
