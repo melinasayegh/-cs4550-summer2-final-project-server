@@ -3,6 +3,7 @@ const unirest = require('unirest');
 module.exports = function (app) {
 
     const recipeModel = require('../models/recipe/recipe.model.server');
+    const userModel = require('../models/user/user.model.server');
 
     findAllRecipes = (req, res) => {
         recipeModel.findAllRecipes()
@@ -18,6 +19,7 @@ module.exports = function (app) {
     createRecipe = (req, res) => {
         let recipe = req.body;
         recipeModel.createRecipe(recipe)
+            .then((recipe) => userModel.addRecipeMyList(recipe.creator, recipe._id))
             .then(recipe => res.send(recipe))
     };
 

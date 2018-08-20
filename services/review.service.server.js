@@ -2,6 +2,9 @@
 module.exports = app => {
 
     const reviewModel = require('../models/review/review.model.server');
+    const recipeModel = require('../models/recipe/recipe.model.server');
+    const userModel = require('../models/user/user.model.server');
+
 
     findAllReviews = (req, res) => {
         reviewModel.findAllReviews()
@@ -30,7 +33,10 @@ module.exports = app => {
     // create recipe
     createReview = (req, res) => {
         reviewModel.createReview(req.params.recipeId, req.body)
-            .then(review => res.send(review))
+            .then((review) => {
+                recipeModel.addReview(review.recipe, review._id);
+                userModel.addReview(review.user, review._id);
+            }).then(review => res.send(review))
     };
 
     // delete recipe
@@ -48,9 +54,10 @@ module.exports = app => {
 
     app.get('/api/review', findAllReviews);
     app.get('/api/recipe/:recipeId/review', findAllReviewsForRecipe);
+    app.get('/api/review/user', findAllReviewsForUser);
     app.get('/api/recipe/:recipeId/review/:reviewId', findReviewById);
     app.post('/api/recipe/:recipeId/review', createReview);
     app.put ('/api/recipe/:recipeId/review/:reviewId', updateReview);
-    app.delete('/api/recipe/:recipeId/review/:reviewId', deleteReview);
+    app.delete('/api/review/:reviewId', deleteReview);
 };
 

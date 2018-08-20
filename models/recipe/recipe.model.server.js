@@ -8,21 +8,24 @@ findAllRecipes = () =>
 findAllRecipesForUser = userId =>
     recipeModel.find({creator: userId});
 
-findRecipeById = (recipeId) =>
-    recipeModel.findById(recipeId);
+findRecipeById = (recipeId) => {
+    let populateQuery = [{path:'user'}, {path:'reviews'}];
+    return recipeModel.findById(recipeId)
+        .populate(populateQuery)
+        .exec();
+}
 
 createRecipe = (recipe) =>
     recipeModel.create(recipe);
 
 updateRecipe = (recipeId, recipe) =>
-    recipeModel.updateOne({_id: recipeId},
-        {$set: recipe});
+    recipeModel.updateOne({_id: recipeId}, {$set: recipe});
 
 deleteRecipe = recipeId =>
     recipeModel.remove({_id: recipeId});
 
-addReview = (review) =>
-    recipeModel.update({_id: review.recipe}, {$push: {reviews: review._id}});
+addReview = (recipeId, reviewId) =>
+    recipeModel.update({_id: recipeId}, {$push: {reviews: reviewId}});
 
 module.exports = {
     findAllRecipes,

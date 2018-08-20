@@ -7,7 +7,6 @@ findAllUsers = () =>
 
 findUserById = userId => {
     let populateQuery = [{path:'myRecipes'}, {path:'favoriteRecipes'}, {path:'myReviews'}];
-
     return userModel.findById({_id: userId})
         .populate(populateQuery)
         .exec();
@@ -36,8 +35,11 @@ updateUser = (userId, user) =>
             email: user.email}
     });
 
-addReview = (review) =>
-    userModel.update({_id: review.user}, {$push: {reviews: review._id}});
+addReview = (userId, reviewId) =>
+    userModel.update({_id: userId}, {$push: {reviews: reviewId}});
+
+addRecipeMyList = (userId, recipeId) =>
+    userModel.update({_id: userId}, {$push: {reviews: recipeId}});
 
 module.exports = {
     findAllUsers,
@@ -47,5 +49,6 @@ module.exports = {
     createUser,
     deleteUser,
     updateUser,
-    addReview
+    addReview,
+    addRecipeMyList
 };
