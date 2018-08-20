@@ -22,7 +22,6 @@ module.exports = app => {
 
     // finds the user in the mongo database and logs them in
     login = (req, res) => {
-        console.log("here");
         const username = req.body.username;
         const password = req.body.password;
         userModel.findUserByCredentials(username, password)
@@ -79,15 +78,35 @@ module.exports = app => {
     };
 
     updateUser = (req, res) => {
-        let user = req.body;
-        let currentUser = req.session.currentUser;
-        if (currentUser._id !== undefined) {
-            userModel.updateUser(currentUser._id, user)
+        var user = req.body;
+        userModel.updateUser(user)
+            .then(obj => {
+                console.log(obj);
+                if (obj.nModified > 0) {
+                    this.findUserById(currentUser._id).then((user) => {
+                        req.session['currentUser'] = user;
+                        res.send(user);
+                    })
+                } else {
+                    res.sendStatus(402);
+                }
+            });
+    };
+
+
+
+    //for ADMIN use
+    updateUserById = (req, res) => {
+        let userId = req.params.userId;
+        if (userId !== undefined) {
+            var adminObj = {};
+            userModel.findUserByCredentials('admin', 'admin')
+                .then(admin => adminObj = admin);
+
+            userModel.updateUser(userId, adminObj)
                 .then(obj => {
-                    console.log(obj);
                     if (obj.nModified > 0) {
-                        this.findUserById(currentUser._id).then((user) => {
-                            req.session['currentUser'] = user;
+                        this.findUserByCredentials('admin', 'admin').then((user) => {
                             res.send(user);
                         })
                     } else {
@@ -104,6 +123,16 @@ module.exports = app => {
             .then(() => res.send(200));
     };
 
+    // removes the profile with given credentials username and pass
+    deleteUser = (req, res) => {
+        const username = req.body.username;
+        const password = req.body.password;
+        userModel.findUserByCredentials(username, password)
+            .then(user => userModel.deleteUser(user._id));
+    };
+
+
+
     app.post('/api/register', register);
     app.post('/api/login',    login);
     app.post('/api/logout',   logout);
@@ -112,5 +141,7 @@ module.exports = app => {
     app.get ('/api/currentUser', currentUser);
     app.get ('/api/profile', profile);
     app.put ('/api/user/update', updateUser);
+    app.put ('/api/user/update/:userId', updateUserById);
     app.delete('/api/user/delete', deleteProfile);
+
 };
