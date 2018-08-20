@@ -4,6 +4,8 @@ This is the NodeJS back-end for our final project for CS 4550 Web Development - 
 
 Melina Sayegh, Yoni Smolyar, Brenda Lau
 
+https://github.com/melinasayegh/cs4550-summer2-final-project/
+
 ***
 Heroku App: https://community-cookings-server.herokuapp.com/
 ***
