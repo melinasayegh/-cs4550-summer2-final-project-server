@@ -2,10 +2,6 @@ const mongoose = require('mongoose');
 const reviewSchema = require('./review.schema.server');
 const reviewModel = mongoose.model('ReviewModel', reviewSchema);
 
-// for pushing a review onto the lists
-const recipeModel = require('../recipe/recipe.model.server');
-const userModel = require('../user/user.model.server');
-
 findAllReviews = () =>
     reviewModel.find();
 
@@ -22,11 +18,7 @@ findReviewByUserAndRecipe = (userId, recipeId) =>
     reviewModel.find({user: userId, recipe: recipeId});
 
 createReview = (review) =>
-    reviewModel.create(review)
-        .then((review) => {
-            recipeModel.addReview(review);
-            userModel.addReview(review);
-        });
+    reviewModel.create(review);
 
 deleteReview = (reviewId) =>
     reviewModel.remove({_id: reviewId});

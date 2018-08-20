@@ -3,6 +3,7 @@ const unirest = require('unirest');
 module.exports = function (app) {
 
     const recipeModel = require('../models/recipe/recipe.model.server');
+    const userModel = require('../models/user/user.model.server');
 
     findAllRecipes = (req, res) => {
         recipeModel.findAllRecipes()
@@ -18,6 +19,7 @@ module.exports = function (app) {
     createRecipe = (req, res) => {
         let recipe = req.body;
         recipeModel.createRecipe(recipe)
+            .then((recipe) => userModel.addRecipeMyList(recipe.creator, recipe._id))
             .then(recipe => res.send(recipe))
     };
 
@@ -30,7 +32,7 @@ module.exports = function (app) {
 
     // update recipe
     updateRecipe = (req, res) => {
-        recipeModel.updateRecipe(req.params.qid, req.body)
+        recipeModel.updateRecipe(req.params.recipeId, req.body)
             .then(status => res.send(status))
     };
 
@@ -50,7 +52,7 @@ module.exports = function (app) {
             .header("X-Mashape-Key", "VsYAEwDWxwmshX990l6hWa2WtVNAp1f1zBojsnIEiyKW9hG6Sf")
             .header("Accept", "application/json")
             .end(recipe => {
-                if (recipe !== null) {
+                if (recipe !== undefined) {
                     res.send(recipe.body);
                 }
             });
