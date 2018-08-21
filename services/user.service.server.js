@@ -155,5 +155,6 @@ module.exports = app => {
     app.delete('/api/user/delete', deleteProfile);
     app.put ('/api/admin/user/update/:userId', updateUserById);
     app.delete ('/api/admin/user/delete/:userId', deleteUser);
+    app.post ('/api/admin/user/create', createUser);
 
 };
