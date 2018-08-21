@@ -30,18 +30,28 @@ deleteUser = (userId) =>
     userModel.remove({_id: userId});
 
 updateUser = (user) =>
-    userModel.findOneAndUpdate({username: user.username},
+    userModel.updateOne({username: user.username},
         {$set: {firstName: user.firstName,
                 lastName: user.lastName,
+                password: user.password,
+                email: user.email}
+        },
+        {new: true});
+
+adminUpdatesUser = (userId, user) =>
+    userModel.updateOne({_id: userId},
+        {$set: {firstName: user.firstName,
+                lastName: user.lastName,
+                password: user.password,
                 email: user.email}
         },
         {new: true});
 
 addReview = (userId, reviewId) =>
-    userModel.update({_id: userId}, {$push: {reviews: reviewId}});
+    userModel.updateOne({_id: userId}, {$push: {reviews: reviewId}});
 
 addRecipeMyList = (userId, recipeId) =>
-    userModel.update({_id: userId}, {$push: {reviews: recipeId}});
+    userModel.updateOne({_id: userId}, {$push: {myRecipes: recipeId}});
 
 deleteUserByCredentials = (username, password) => {
     userModel.remove({username: username, password: password});
@@ -57,5 +67,6 @@ module.exports = {
     deleteUser,
     updateUser,
     addReview,
-    addRecipeMyList
+    addRecipeMyList,
+    adminUpdatesUser
 };

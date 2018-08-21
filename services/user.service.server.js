@@ -93,20 +93,23 @@ module.exports = app => {
             });
     };
 
-
+    // removes the profile of the currently logged in user
+    deleteProfile = (req, res) => {
+        const currentUser = req.session['currentUser'];
+        userModel.deleteUser(currentUser._id)
+            .then(() => res.send(200));
+    };
 
     //for ADMIN use
+    // update user with id
     updateUserById = (req, res) => {
         let userId = req.params.userId;
+        let user = req.body;
         if (userId !== undefined) {
-            var adminObj = {};
-            userModel.findUserByCredentials('admin', 'admin')
-                .then(admin => adminObj = admin);
-
-            userModel.updateUser(userId, adminObj)
+            userModel.adminUpdatesUser(userId, user)
                 .then(obj => {
                     if (obj.nModified > 0) {
-                        this.findUserByCredentials('admin', 'admin').then((user) => {
+                        this.findUserById(currentUser._id).then((user) => {
                             res.send(user);
                         })
                     } else {
@@ -116,22 +119,13 @@ module.exports = app => {
         }
     };
 
-    // removes the profile of the currently logged in user
-    deleteProfile = (req, res) => {
-        const currentUser = req.session['currentUser'];
+    //for ADMIN use
+    // removes the profile with id
+    deleteUser = (req, res) => {
+        let userId = req.params.userId;
         userModel.deleteUser(currentUser._id)
             .then(() => res.send(200));
     };
-
-    // removes the profile with given credentials username and pass
-    deleteUser = (req, res) => {
-        const username = req.body.username;
-        const password = req.body.password;
-        userModel.findUserByCredentials(username, password)
-            .then(user => userModel.deleteUser(user._id));
-    };
-
-
 
     app.post('/api/register', register);
     app.post('/api/login',    login);
@@ -141,7 +135,8 @@ module.exports = app => {
     app.get ('/api/currentUser', currentUser);
     app.get ('/api/profile', profile);
     app.put ('/api/user/update', updateUser);
-    app.put ('/api/user/update/:userId', updateUserById);
     app.delete('/api/user/delete', deleteProfile);
+    app.put ('/api/admin/user/update/:userId', updateUserById);
+    app.delete ('/api/admin/user/delete/:userId', deleteUser);
 
 };
