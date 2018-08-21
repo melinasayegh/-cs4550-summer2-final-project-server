@@ -104,18 +104,19 @@ module.exports = app => {
     // update user with id
     updateUserById = (req, res) => {
         let userId = req.params.userId;
-        let user = req.body;
+        let newUser = req.body;
         if (userId !== undefined) {
-            userModel.adminUpdatesUser(userId, user)
+            userModel.adminUpdatesUser(userId, newUser)
                 .then(obj => {
+                    console.log(obj);
                     if (obj.nModified > 0) {
-                        this.findUserById(currentUser._id).then((user) => {
-                            res.send(user);
-                        })
+                        this.findUserById(userId).then((user) => res.send(user));
                     } else {
-                        res.sendStatus(402);
+                        res.sendStatus(401);
                     }
                 })
+        } else {
+            res.sendStatus(402);
         }
     };
 
@@ -123,8 +124,24 @@ module.exports = app => {
     // removes the profile with id
     deleteUser = (req, res) => {
         let userId = req.params.userId;
-        userModel.deleteUser(currentUser._id)
-            .then(() => res.send(200));
+        userModel.deleteUser(userId)
+            .then(() => res.send(200), () => res.send(400));
+    };
+
+    // creates a new user in the mongo database and logs them in
+    createUser = (req, res) =>  {
+        const newUser = req.body;
+        userModel.findUserByUsername(newUser.username)
+            .then((user) => {
+                if(user === null) {
+                    userModel.createUser(newUser)
+                        .then((user) =>  {
+                            res.sendStatus(200);
+                        });
+                } else {
+                    res.sendStatus(401);
+                }
+            })
     };
 
     app.post('/api/register', register);
