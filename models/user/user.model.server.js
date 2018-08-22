@@ -6,7 +6,7 @@ findAllUsers = () =>
     userModel.find();
 
 findUserById = userId => {
-    let populateQuery = [{path:'myRecipes'}, {path:'favoriteRecipes'}, {path:'myReviews'}, {path: 'friends'}];
+    let populateQuery = [{path:'myRecipes'}, {path:'favoriteRecipes'}, {path:'myReviews'}, {path: 'friends'}]
 
     return userModel.findById({_id: userId})
         .populate(populateQuery)

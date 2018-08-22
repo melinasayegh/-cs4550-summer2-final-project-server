@@ -67,7 +67,6 @@ module.exports = function (app) {
 
     app.get('/api/recipe', findAllRecipes);
     app.get('/api/recipe/:recipeId', findRecipeById);
-    app.get('/api/results/:recipeTitle', findRecipesByTitle);
     app.post('/api/recipe', createRecipe);
     app.put ('/api/recipe/:recipeId', updateRecipe);
     app.delete('/api/recipe/:recipeId', deleteRecipe);
