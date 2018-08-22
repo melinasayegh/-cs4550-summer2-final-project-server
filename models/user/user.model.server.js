@@ -30,9 +30,7 @@ deleteUser = (userId) =>
     userModel.remove({_id: userId});
 
 updateUser = (user) => {
-    // console.log(user.username);
-    // console.log(user.friends);
-    return userModel.updateOne({username: user.username},
+    return userModel.update({username: user.username},
                         {
                             $set: {
                                 myRecipes: user.myRecipes,
@@ -44,8 +42,7 @@ updateUser = (user) => {
                                 password: user.password,
                                 email: user.email
                             }
-                        },
-                        {new: true});
+                        });
 }
 
 adminUpdatesUser = (userId, user) => {

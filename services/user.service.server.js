@@ -78,19 +78,8 @@ module.exports = app => {
 
     updateUser = (req, res) => {
         var user = req.body;
-        console.log(req.body);
         userModel.updateUser(user)
-            .then(obj => {
-                console.log(obj);
-                if (obj.nModified > 0) {
-                    this.findUserById(currentUser._id).then((user) => {
-                        req.session['currentUser'] = user;
-                        res.send(user);
-                    })
-                } else {
-                    res.sendStatus(402);
-                }
-            });
+            .then(obj => res.sendStatus(200));
     };
 
     // removes the profile of the currently logged in user
