@@ -17,7 +17,7 @@ const recipeSchema = mongoose.Schema({
     numServings: Number,
     tags: [{
         type: String,
-        enum: ['VEGAN', 'VEGAN', 'DIABETIC', 'GLUTEN-FREE', 'LOW-CALORIE', 'GUILTY-PLEASURE', 'NONE'],
+        enum: ['VEGAN', 'VEGETARIAN', 'DIABETIC', 'GLUTEN-FREE', 'LOW-CALORIE', 'GUILTY-PLEASURE', 'NONE'],
         default: 'NONE'
     }],
     reviews: [{

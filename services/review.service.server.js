@@ -32,10 +32,13 @@ module.exports = app => {
 
     // create recipe
     createReview = (req, res) => {
-        reviewModel.createReview(req.params.recipeId, req.body)
+        let currentUser = req.session.currentUser;
+        reviewModel.createReview(req.body)
             .then((review) => {
-                recipeModel.addReview(review.recipe, review._id);
-                userModel.addReview(review.user, review._id);
+                recipeModel.addReview(req.params.recipeId, review)
+                    .then(response => console.log(response));
+                userModel.addReview(currentUser._id, review)
+                    .then(response => console.log(response));
             }).then(review => res.send(review))
     };
 

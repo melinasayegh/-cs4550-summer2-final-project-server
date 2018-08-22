@@ -6,7 +6,8 @@ findAllUsers = () =>
     userModel.find();
 
 findUserById = userId => {
-    let populateQuery = [{path:'myRecipes'}, {path:'favoriteRecipes'}, {path:'myReviews'}];
+    let populateQuery = [{path:'myRecipes'}, {path:'favoriteRecipes'},
+        {path:'reviews', populate: {path: 'recipe'}}, {path: 'friends'}]
 
     return userModel.findById({_id: userId})
         .populate(populateQuery)
@@ -17,7 +18,8 @@ findUserByCredentials = (username, password) =>
     userModel.findOne({username: username, password: password});
 
 findUserByUsername = (username) => {
-    let populateQuery = [{path: 'myRecipes'}, {path: 'favoriteRecipes'}, {path: 'myReviews'}];
+    let populateQuery = [{path: 'myRecipes'}, {path: 'favoriteRecipes'},
+        {path: 'reviews', populate: {path: 'recipe'}}, {path: 'friends'}];
     return userModel.findOne({username: username})
         .populate(populateQuery)
         .exec();
@@ -29,19 +31,40 @@ createUser = (user) =>
 deleteUser = (userId) =>
     userModel.remove({_id: userId});
 
-updateUser = (user) =>
-    userModel.findOneAndUpdate({username: user.username},
+updateUser = (user) => {
+    return userModel.update({username: user.username},
+                        {
+                            $set: {
+                                myRecipes: user.myRecipes,
+                                favoriteRecipes: user.favoriteRecipes,
+                                reviews: user.reviews,
+                                friends: user.friends,
+                                firstName: user.firstName,
+                                lastName: user.lastName,
+                                password: user.password,
+                                email: user.email
+                            }
+                        });
+}
+
+adminUpdatesUser = (userId, user) => {
+    console.log(userId);
+    console.log(user);
+   return userModel.updateOne({_id: userId},
         {$set: {firstName: user.firstName,
                 lastName: user.lastName,
-                email: user.email}
-        },
-        {new: true});
+                password: user.password,
+                email: user.email
+        }
+    })
+};
 
-addReview = (userId, reviewId) =>
-    userModel.update({_id: userId}, {$push: {reviews: reviewId}});
+addReview = (userId, review) => {
+    return userModel.updateOne({_id: userId}, {$push: {reviews: review._id}});
+}
 
 addRecipeMyList = (userId, recipeId) =>
-    userModel.update({_id: userId}, {$push: {reviews: recipeId}});
+    userModel.updateOne({_id: userId}, {$push: {myRecipes: recipeId}});
 
 deleteUserByCredentials = (username, password) => {
     userModel.remove({username: username, password: password});
@@ -57,5 +80,6 @@ module.exports = {
     deleteUser,
     updateUser,
     addReview,
-    addRecipeMyList
+    addRecipeMyList,
+    adminUpdatesUser
 };
