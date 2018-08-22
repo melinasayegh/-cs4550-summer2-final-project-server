@@ -72,13 +72,13 @@ module.exports = app => {
 
     // retrieves the profile of the currently logged in user
     profile = (req, res) => {
-        const currentUser = req.session['currentUser'];
-        userModel.findUserByUsername(currentUser.username)
+        userModel.findUserById(req.params['userId'])
             .then(user => res.json(user))
     };
 
     updateUser = (req, res) => {
         var user = req.body;
+        console.log(req.body);
         userModel.updateUser(user)
             .then(obj => {
                 console.log(obj);
@@ -150,7 +150,7 @@ module.exports = app => {
     app.get ('/api/user',     findAllUsers);
     app.get ('/api/user/:userId', findUserById);
     app.get ('/api/currentUser', currentUser);
-    app.get ('/api/profile', profile);
+    app.get ('/api/profile/:userId', profile);
     app.put ('/api/user/update', updateUser);
     app.delete('/api/user/delete', deleteProfile);
     app.put ('/api/admin/user/update/:userId', updateUserById);

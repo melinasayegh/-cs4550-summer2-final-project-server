@@ -6,7 +6,7 @@ findAllUsers = () =>
     userModel.find();
 
 findUserById = userId => {
-    let populateQuery = [{path:'myRecipes'}, {path:'favoriteRecipes'}, {path:'myReviews'}];
+    let populateQuery = [{path:'myRecipes'}, {path:'favoriteRecipes'}, {path:'myReviews'}, {path: 'friends'}];
 
     return userModel.findById({_id: userId})
         .populate(populateQuery)
@@ -17,7 +17,7 @@ findUserByCredentials = (username, password) =>
     userModel.findOne({username: username, password: password});
 
 findUserByUsername = (username) => {
-    let populateQuery = [{path: 'myRecipes'}, {path: 'favoriteRecipes'}, {path: 'myReviews'}];
+    let populateQuery = [{path: 'myRecipes'}, {path: 'favoriteRecipes'}, {path: 'myReviews'}, {path: 'friends'}];
     return userModel.findOne({username: username})
         .populate(populateQuery)
         .exec();
@@ -29,14 +29,24 @@ createUser = (user) =>
 deleteUser = (userId) =>
     userModel.remove({_id: userId});
 
-updateUser = (user) =>
-    userModel.updateOne({username: user.username},
-        {$set: {firstName: user.firstName,
-                lastName: user.lastName,
-                password: user.password,
-                email: user.email}
-        },
-        {new: true});
+updateUser = (user) => {
+    // console.log(user.username);
+    // console.log(user.friends);
+    return userModel.updateOne({username: user.username},
+                        {
+                            $set: {
+                                myRecipes: user.myRecipes,
+                                favoriteRecipes: user.favoriteRecipes,
+                                reviews: user.reviews,
+                                friends: user.friends,
+                                firstName: user.firstName,
+                                lastName: user.lastName,
+                                password: user.password,
+                                email: user.email
+                            }
+                        },
+                        {new: true});
+}
 
 adminUpdatesUser = (userId, user) => {
     console.log(userId);
