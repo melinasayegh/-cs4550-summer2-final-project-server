@@ -38,14 +38,17 @@ updateUser = (user) =>
         },
         {new: true});
 
-adminUpdatesUser = (userId, user) =>
-    userModel.updateOne({_id: userId},
+adminUpdatesUser = (userId, user) => {
+    console.log(userId);
+    console.log(user);
+   return userModel.updateOne({_id: userId},
         {$set: {firstName: user.firstName,
                 lastName: user.lastName,
                 password: user.password,
-                email: user.email}
-        },
-        {new: true});
+                email: user.email
+        }
+    })
+};
 
 addReview = (userId, reviewId) =>
     userModel.updateOne({_id: userId}, {$push: {reviews: reviewId}});
