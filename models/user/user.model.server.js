@@ -6,7 +6,7 @@ findAllUsers = () =>
     userModel.find();
 
 findUserById = userId => {
-    let populateQuery = [{path:'myRecipes'}, {path:'favoriteRecipes'}, {path:'myReviews'}];
+    let populateQuery = [{path:'myRecipes'}, {path:'favoriteRecipes'}, {path:'reviews'}];
 
     return userModel.findById({_id: userId})
         .populate(populateQuery)
@@ -17,7 +17,7 @@ findUserByCredentials = (username, password) =>
     userModel.findOne({username: username, password: password});
 
 findUserByUsername = (username) => {
-    let populateQuery = [{path: 'myRecipes'}, {path: 'favoriteRecipes'}, {path: 'myReviews'}];
+    let populateQuery = [{path: 'myRecipes'}, {path: 'favoriteRecipes'}, {path: 'reviews'}];
     return userModel.findOne({username: username})
         .populate(populateQuery)
         .exec();
