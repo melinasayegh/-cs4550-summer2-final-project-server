@@ -7,6 +7,7 @@ const userSchema = mongoose.Schema({
     lastName: String,
     email: String,
     isAdmin: Boolean,
+    isChef: Boolean,
     myRecipes: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'RecipeModel'}],
