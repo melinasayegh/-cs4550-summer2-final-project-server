@@ -31,6 +31,7 @@ module.exports = {
     findReviewById,
     findReviewsForUser,
     findReviewsForRecipe,
+    findReviewByUserAndRecipe,
     createReview,
     deleteReview,
     updateReview
