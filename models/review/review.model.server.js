@@ -5,14 +5,26 @@ const reviewModel = mongoose.model('ReviewModel', reviewSchema);
 findAllReviews = () =>
     reviewModel.find();
 
-findReviewById = reviewId =>
-    reviewModel.findById({_id: reviewId});
+findReviewById = reviewId => {
+    let populateQuery = [{path:'user'}, {path:'recipe'}];
+    return reviewModel.findById({_id: reviewId})
+        .populate(populateQuery)
+        .exec();
+};
 
-findReviewsForUser = (userId) =>
-    reviewModel.find({user: userId});
+findReviewsForUser = (userId) => {
+    let populateQuery = [{path: 'user'}, {path: 'recipe'}];
+    reviewModel.find({user: userId})
+        .populate(populateQuery)
+        .exec();
+};
 
-findReviewsForRecipe = (recipeId) =>
-    reviewModel.find({recipe: recipeId});
+findReviewsForRecipe = (recipeId) => {
+    let populateQuery = [{path: 'user'}, {path: 'recipe'}];
+    reviewModel.find({recipe: recipeId})
+        .populate(populateQuery)
+        .exec();
+};
 
 findReviewByUserAndRecipe = (userId, recipeId) =>
     reviewModel.find({user: userId, recipe: recipeId});
