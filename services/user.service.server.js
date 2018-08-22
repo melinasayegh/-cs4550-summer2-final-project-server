@@ -72,25 +72,14 @@ module.exports = app => {
 
     // retrieves the profile of the currently logged in user
     profile = (req, res) => {
-        const currentUser = req.session['currentUser'];
-        userModel.findUserByUsername(currentUser.username)
+        userModel.findUserById(req.params['userId'])
             .then(user => res.json(user))
     };
 
     updateUser = (req, res) => {
         var user = req.body;
         userModel.updateUser(user)
-            .then(obj => {
-                console.log(obj);
-                if (obj.nModified > 0) {
-                    this.findUserById(currentUser._id).then((user) => {
-                        req.session['currentUser'] = user;
-                        res.send(user);
-                    })
-                } else {
-                    res.sendStatus(402);
-                }
-            });
+            .then(obj => res.sendStatus(200));
     };
 
     // removes the profile of the currently logged in user
@@ -150,7 +139,7 @@ module.exports = app => {
     app.get ('/api/user',     findAllUsers);
     app.get ('/api/user/:userId', findUserById);
     app.get ('/api/currentUser', currentUser);
-    app.get ('/api/profile', profile);
+    app.get ('/api/profile/:userId', profile);
     app.put ('/api/user/update', updateUser);
     app.delete('/api/user/delete', deleteProfile);
     app.put ('/api/admin/user/update/:userId', updateUserById);
