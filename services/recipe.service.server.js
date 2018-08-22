@@ -3,20 +3,29 @@ const unirest = require('unirest');
 module.exports = function (app) {
 
     const recipeModel = require('../models/recipe/recipe.model.server');
+    const userModel = require('../models/user/user.model.server');
 
     findAllRecipes = (req, res) => {
         recipeModel.findAllRecipes()
-            .then(quizzes => res.send(quizzes))
+            .then(recipes => res.send(recipes))
     };
 
     findRecipeById = (req, res) => {
-        recipeModel.findRecipeById(req.params.qid)
-            .then(quiz => res.send(quiz))
+        recipeModel.findRecipeById(req.params.recipeId)
+            .then(recipe => res.send(recipe))
     };
+
+    findRecipesByTitle = (req, res) => {
+        const modRecipeTitle = req.params.recipeTitle.replace(/%20/g, " ");
+        recipeModel.findRecipesByTitle(modRecipeTitle)
+            .then(recipes => res.send(recipes));
+    }
 
     // create recipe
     createRecipe = (req, res) => {
-        recipeModel.createRecipe(req.body)
+        let recipe = req.body;
+        recipeModel.createRecipe(recipe)
+            .then((recipe) => userModel.addRecipeMyList(recipe.creator, recipe._id))
             .then(recipe => res.send(recipe))
     };
 
@@ -29,7 +38,7 @@ module.exports = function (app) {
 
     // update recipe
     updateRecipe = (req, res) => {
-        recipeModel.updateRecipe(req.params.qid, req.body)
+        recipeModel.updateRecipe(req.params.recipeId, req.body)
             .then(status => res.send(status))
     };
 
@@ -38,10 +47,22 @@ module.exports = function (app) {
             .header("X-Mashape-Key", "VsYAEwDWxwmshX990l6hWa2WtVNAp1f1zBojsnIEiyKW9hG6Sf")
             .header("Accept", "application/json")
             .end(recipes => {
-                if (recipes !== null) {
-                    res.send(recipes.body.recipes[0])
+                if (recipes !== undefined) {
+                    res.send(recipes.body.recipes[0]);
                 }
             });
+    };
+
+    getRecipeById = (req, res) => {
+        unirest.get("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/" + req.params.recipeId + "/information?includeNutrition=false")
+            .header("X-Mashape-Key", "VsYAEwDWxwmshX990l6hWa2WtVNAp1f1zBojsnIEiyKW9hG6Sf")
+            .header("Accept", "application/json")
+            .end(recipe => {
+                if (recipe !== undefined) {
+                    res.send(recipe.body);
+                }
+            });
+
     };
 
     app.get('/api/recipe', findAllRecipes);
@@ -50,4 +71,5 @@ module.exports = function (app) {
     app.put ('/api/recipe/:recipeId', updateRecipe);
     app.delete('/api/recipe/:recipeId', deleteRecipe);
     app.get('/api/randomRecipe/:tag', getRandomRecipe);
+    app.get('/api/recipe/:recipeId', getRecipeById);
 };
