@@ -9,9 +9,9 @@ findAllRecipesForUser = userId =>
     recipeModel.find({creator: userId});
 
 findRecipeById = (recipeId) => {
-    let populateQuery = [{path:'creator'}, {path:'reviews'}, {path:'user'}];
+    let populateQuery = [{path:'creator'}, {path:'reviews'}];
     return recipeModel.findById(recipeId)
-        .populate(populateQuery, populate({path:'user'}))
+        .populate(populateQuery)
         .exec();
 }
 
