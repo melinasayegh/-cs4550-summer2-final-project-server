@@ -6,7 +6,8 @@ findAllUsers = () =>
     userModel.find();
 
 findUserById = userId => {
-    let populateQuery = [{path:'myRecipes'}, {path:'favoriteRecipes'}, {path:'myReviews'}, {path: 'friends'}]
+    let populateQuery = [{path:'myRecipes'}, {path:'favoriteRecipes'},
+        {path:'reviews', populate: {path: 'recipe'}}, {path: 'friends'}]
 
     return userModel.findById({_id: userId})
         .populate(populateQuery)
@@ -17,7 +18,8 @@ findUserByCredentials = (username, password) =>
     userModel.findOne({username: username, password: password});
 
 findUserByUsername = (username) => {
-    let populateQuery = [{path: 'myRecipes'}, {path: 'favoriteRecipes'}, {path: 'myReviews'}, {path: 'friends'}];
+    let populateQuery = [{path: 'myRecipes'}, {path: 'favoriteRecipes'},
+        {path: 'reviews', populate: {path: 'recipe'}}, {path: 'friends'}];
     return userModel.findOne({username: username})
         .populate(populateQuery)
         .exec();
@@ -57,8 +59,9 @@ adminUpdatesUser = (userId, user) => {
     })
 };
 
-addReview = (userId, reviewId) =>
-    userModel.updateOne({_id: userId}, {$push: {reviews: reviewId}});
+addReview = (userId, review) => {
+    return userModel.updateOne({_id: userId}, {$push: {reviews: review._id}});
+}
 
 addRecipeMyList = (userId, recipeId) =>
     userModel.updateOne({_id: userId}, {$push: {myRecipes: recipeId}});

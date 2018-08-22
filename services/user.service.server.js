@@ -60,7 +60,7 @@ module.exports = app => {
 
     currentUser = (req, res) => {
         const currentUser = req.session['currentUser'];
-        if(currentUser) {
+        if (currentUser) {
             userModel.findUserById(currentUser._id)
                 .then(user => {
                     return res.send(user)

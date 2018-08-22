@@ -9,7 +9,7 @@ findAllRecipesForUser = userId =>
     recipeModel.find({creator: userId});
 
 findRecipeById = (recipeId) => {
-    let populateQuery = [{path:'creator'}, {path:'reviews'}];
+    let populateQuery = [{path:'creator'}, {path:'reviews', populate: {path: 'user'}}];
     return recipeModel.findById(recipeId)
         .populate(populateQuery)
         .exec();
@@ -28,8 +28,9 @@ updateRecipe = (recipeId, recipe) =>
 deleteRecipe = recipeId =>
     recipeModel.remove({_id: recipeId});
 
-addReview = (recipeId, reviewId) =>
-    recipeModel.update({_id: recipeId}, {$push: {reviews: reviewId}});
+addReview = (recipeId, review) => {
+    return recipeModel.update({_id: recipeId}, {$push: {reviews: review._id}});
+}
 
 module.exports = {
     findAllRecipes,
